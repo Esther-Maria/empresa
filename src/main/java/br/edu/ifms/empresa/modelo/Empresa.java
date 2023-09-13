@@ -2,6 +2,7 @@ package br.edu.ifms.empresa.modelo;
 
 import org.hibernate.validator.constraints.br.CNPJ;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,10 +22,11 @@ public class Empresa {
 	private String nome;
 	
 	@CNPJ
-	private String cnpj;	
-	 
-	@OneToOne
+	private String cnpj;		
+	
+	@OneToOne(mappedBy = "empresa", cascade = CascadeType.ALL)
 	private Filial filial;
+	
 	
 	public Long getId() {
 		return id;
@@ -44,6 +46,12 @@ public class Empresa {
 	public void setCnpj(String cnpj) {
 		this.cnpj = cnpj;
 	}
+	public Filial getFilial() {
+		return filial;
+	}
+	public void setFilial(Filial filial) {
+		this.filial = filial;
+	}
 	
-	
+
 }

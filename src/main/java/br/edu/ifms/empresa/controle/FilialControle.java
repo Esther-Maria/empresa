@@ -2,7 +2,9 @@ package br.edu.ifms.empresa.controle;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,19 +19,40 @@ import br.edu.ifms.empresa.servico.FilialServico;
 import jakarta.validation.Valid;
 
 @Controller
-@RequestMapping("/s")
+@RequestMapping("/filial")
 public class FilialControle {
-	
+
 	@Autowired
 	private EmpresaServico empresaServico;
-	
+
 	@Autowired
 	private FilialServico filialServico;
-	
+
+	@GetMapping("/buscar-filial/{id}")
+	public String novaFilial(@PathVariable("id") long id, Model model) {
+		String pagina = "";
+		try {
+			Empresa empresa = empresaServico.buscarEmpresaPorId(id);
+			if (empresa.getFilial() == null) {
+				Filial filial = new Filial();
+				filial.setEmpresa(empresa);
+				model.addAttribute("item", filial);
+				pagina = "/nova-filial";
+			} else {
+				model.addAttribute("item", empresa.getFilial());
+				pagina = "/alterar-filial";
+			}
+
+		} catch (EmpresaNotFoundException e) {
+			System.out.println(e.getMessage());
+			return "redirect:/";
+		}
+		return pagina;
+	}
+
 	@PostMapping("/gravar-filial/{idEmpresa}")
 	public String gravarFilial(@PathVariable("idEmpresa") long idEmpresa,
-			@ModelAttribute("item") @Valid Filial filial, BindingResult result, 
-			RedirectAttributes attributes) {
+			@ModelAttribute("item") @Valid Filial filial, BindingResult result, RedirectAttributes attributes) {
 		try {
 			Empresa empresa = empresaServico.buscarEmpresaPorId(idEmpresa);
 			filial.setEmpresa(empresa);
@@ -40,7 +63,6 @@ public class FilialControle {
 		if (result.hasErrors()) {
 			return "/nova-filial";
 		}
-		
 		filialServico.criarFilial(filial);
 		attributes.addFlashAttribute("mensagem", "Gravado com sucesso");
 		return "redirect:/";
@@ -65,4 +87,6 @@ public class FilialControle {
 		attributes.addFlashAttribute("mensagem", "Gravado com sucesso");
 		return "redirect:/";
 	}
+
+
 }

@@ -20,41 +20,19 @@
 		<div class="row">
 			<div class="col">
 				<a href="/" class="btn btn-primary btn-sm">Voltar</a>
-				<h3 th:text="${'Endereço de ' + item.estudante.nome}"></h3>
+				<h3 th:text="${'Filial de ' + item.empresa.nome}"></h3>
 				
-				<form th:action="@{/endereco/alterar-endereco/{idEstudante}/{idEndereco}(idEstudante=${item.estudante.id},idEndereco=${item.id})}"
+				<form th:action="@{/filial/alterar-filial/{idEmpresa}/{idFilial}(idEmpresa=${item.empresa.id},idFilial=${item.id})}"
 					th:object="${item}" method="post">
 
-					<div class="row mb-3">
-						<label class="col-sm-1 col-form-label">Logradouro:</label>
+										<div class="row mb-3">
+						<label class="col-sm-1 col-form-label">Nome:</label>
 						<div class="col-sm-5">
-							<input class="form-control" type="text" th:field="*{logradouro}">
+							<input class="form-control" type="text" th:field="*{nome}">
 						</div>
 						<div class="col-sm-5">
-							<span class="mensagem" th:if="${#fields.hasErrors('logradouro')}"
-								th:errors="*{logradouro}"></span>
-						</div>
-					</div>
-
-					<div class="row mb-3">
-						<label class="col-sm-1 col-form-label">Número:</label>
-						<div class="col-sm-5">
-							<input class="form-control" type="text" th:field="*{numero}">
-						</div>
-						<div class="col-sm-5">
-							<span class="mensagem" th:if="${#fields.hasErrors('numero')}"
-								th:errors="*{numero}"></span>
-						</div>
-					</div>
-					
-					<div class="row mb-3">
-						<label class="col-sm-1 col-form-label">CEP:</label>
-						<div class="col-sm-5">
-							<input class="form-control" type="text" th:field="*{cep}">
-						</div>
-						<div class="col-sm-5">
-							<span class="mensagem" th:if="${#fields.hasErrors('cep')}"
-								th:errors="*{cep}"></span>
+							<span class="mensagem" th:if="${#fields.hasErrors('nome')}"
+								th:errors="*{nome}"></span>
 						</div>
 					</div>
 

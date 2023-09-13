@@ -47,6 +47,7 @@
 						<th scope="col">ID</th>
 						<th scope="col">Nome</th>
 						<th scope="col">CNPJ</th>
+						<th scope="col">Nome Filial</th>
 						<th scope="col">Excluir</th>
 						<th scope="col">Alterar</th>
 						<th></th>
@@ -58,9 +59,14 @@
 					</tr>
 					<tr th:each="empresa: ${listaEmpresa} ">
 						<th scope="row"><span th:text="${empresa.id}"></span></th>
-						<td><span th:text="${empresa.nome}"></span></td>
+						<td><span th:text="${empresa.nome}"></span></td>						
 						<td><span th:text="${empresa.cnpj}"></span></td>
-
+						<td th:if="${empresa.filial != null}">
+							<span th:text="${empresa.filial.nome}"></span>
+						</td>
+						<td th:unless="${empresa.filial != null}">
+							<span>Sem Filial</span>
+						</td>
 						<td><a class="fa-regular fa-trash-can icon-dark btn-delete"
 							th:href="@{/excluir/{id}(id=${empresa.id})}"
 							th:data-confirm-delete="|Você gostaria de apagar ${empresa.nome}?|"
@@ -70,8 +76,7 @@
 						<td><a class="fa-regular fa-pen-to-square icon-dark"
 							th:href="@{/editar/{id}(id=${empresa.id})}"></a></td>
 						
-						<td><a 
-							th:href="@{/filial/buscar-filial(id=${empresa.id})}">Filial</td>
+						<td><a th:href="@{/filial/buscar-filial/{id}(id=${empresa.id})}">Filial</a>
 					</tr>
 				</tbody>
 			</table>
